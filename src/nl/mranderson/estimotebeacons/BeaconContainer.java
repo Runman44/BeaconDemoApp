@@ -1,5 +1,6 @@
 /**
  * @author Dennis Anderson
+ * @version 1.1
  */
 package nl.mranderson.estimotebeacons;
 
