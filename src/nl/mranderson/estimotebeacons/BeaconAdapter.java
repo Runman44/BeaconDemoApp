@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2014, Dennis Anderson. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * 
+ * listview adapter to fill the listview with beacon information. 
+ */
 package nl.mranderson.estimotebeacons;
 
 import java.util.ArrayList;
@@ -35,7 +41,7 @@ public class BeaconAdapter extends ArrayAdapter<Beacon> {
 		} else {
 			item_beacon_view = convertView;
 		}
-
+		// adds the beacon information in the list.
 		final Beacon beacon = objects.get(position);
 		TextView name = (TextView) item_beacon_view.findViewById(R.id.name);
 		TextView prox = (TextView) item_beacon_view.findViewById(R.id.prox);

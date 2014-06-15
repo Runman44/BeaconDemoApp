@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2014, Dennis Anderson. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * 
+ * This service will post a notification when a beacon is found.
+ */
+
 package nl.mranderson.estimotebeacons;
 
 import java.util.ArrayList;
@@ -11,7 +18,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
@@ -42,20 +48,46 @@ public class BeaconDiscoverService extends Service {
 				try {
 					beaconManager.startRanging(ALL_ESTIMOTE_BEACONS);
 				} catch (RemoteException e) {
-					Log.e("###", "Cannot start ranging", e);
+					e.printStackTrace();
 				}
 			}
 		});
 		setRanging();
 	}
 
+	@Override
+	public void onDestroy() {
+		try {
+			// stop searching for beacons
+			beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		super.onDestroy();
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		return mBinder;
+	}
+
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		return START_STICKY;
+	}
+
+	public class LocalBinder extends Binder {
+		BeaconDiscoverService getService() {
+			return BeaconDiscoverService.this;
+		}
+	}
+
 	private void setRanging() {
+		// searching for beacons
 		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
 
 			@Override
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
-				Log.d("ESTSPWD", "BeaconDiscoverService onBeaconsDiscovered");
-
+				// for every beacon that has been found. Check its proximity.
 				for (Beacon beacon : beacons) {
 					switch (Utils.computeProximity(beacon)) {
 					case FAR:
@@ -68,25 +100,23 @@ public class BeaconDiscoverService extends Service {
 						break;
 					}
 				}
-
+				// save every found beacon in the container
 				BeaconContainer beaconContainer = BeaconContainer
 						.getSingletonObject();
 				beaconContainer.setBeacons(new ArrayList<Beacon>(beacons));
+
+				// send message to boradcastreceiver
 				sendBroadcast(intent);
 			}
 		});
 	}
 
-	@Override
-	public void onDestroy() {
-		try {
-			beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		super.onDestroy();
-	}
-
+	/**
+	 * Setup and build a notification
+	 * 
+	 * @param msg
+	 *            message to be send to the user
+	 */
 	private void postNotification(String msg) {
 		Intent notifyIntent = new Intent(getApplicationContext(),
 				BeaconActivity.class);
@@ -104,18 +134,4 @@ public class BeaconDiscoverService extends Service {
 		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		return mBinder;
-	}
-
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		return START_STICKY;
-	}
-
-	public class LocalBinder extends Binder {
-		BeaconDiscoverService getService() {
-			return BeaconDiscoverService.this;
-		}
-	}
 }

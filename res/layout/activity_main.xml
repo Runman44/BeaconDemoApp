@@ -6,6 +6,4 @@
     android:background="@drawable/nobeacon"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-     >
-
-</LinearLayout>
+     />

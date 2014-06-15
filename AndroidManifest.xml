@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nl.mranderson.estimotebeacons"
-    android:versionCode="1"
-    android:versionName="1.1" >
+    android:versionCode="2"
+    android:versionName="2.1" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -40,7 +40,6 @@
         <service
             android:name="com.estimote.sdk.service.BeaconService"
             android:exported="false" />
-
         <receiver
             android:name="nl.mranderson.estimotebeacons.BeaconDiscoverReceiver"
             android:enabled="true" >

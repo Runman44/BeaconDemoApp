@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2014, Dennis Anderson. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * 
+ * This class will interact with the proximity of the selected beacon. The background image will change depending on the proximity of the beacon.
+ */
 package nl.mranderson.estimotebeacons;
 
 import android.app.Activity;
@@ -16,6 +22,7 @@ import com.estimote.sdk.Beacon;
 import com.estimote.sdk.Utils;
 
 public class MainActivity extends Activity {
+
 	private Intent beaconDiscoverServiceIntent;
 	public static Beacon clickedBeacon = null;
 
@@ -31,7 +38,9 @@ public class MainActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		// start the service
 		startService(beaconDiscoverServiceIntent);
+		// register broadcastreceiver
 		registerReceiver(broadcastReceiver, new IntentFilter(
 				BeaconDiscoverService.BROADCAST_ACTION));
 	}
@@ -39,7 +48,9 @@ public class MainActivity extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
+		// unregister the broadcastreceiver
 		unregisterReceiver(broadcastReceiver);
+		// stop the service
 		stopService(beaconDiscoverServiceIntent);
 	}
 
@@ -54,6 +65,7 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.beacons) {
+			// open BeaconActivity on menu item clicked.
 			Intent intent = new Intent(MainActivity.this, BeaconActivity.class);
 			startActivity(intent);
 			return true;
@@ -82,6 +94,11 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * When a beacon is found it will check if it is the same beacon that has
+	 * been selected and will then set the background image that is
+	 * corresponding to the proximity.
+	 */
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
