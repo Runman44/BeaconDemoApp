@@ -30,6 +30,25 @@ public class BeaconActivity extends Activity {
 				BeaconDiscoverService.class);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		startService(beaconDiscoverServiceIntent);
+		registerReceiver(broadcastReceiver, new IntentFilter(
+				BeaconDiscoverService.BROADCAST_ACTION));
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		unregisterReceiver(broadcastReceiver);
+		stopService(beaconDiscoverServiceIntent);
+	}
+
+	public void setBeacon(Beacon beacon) {
+		MainActivity.clickedBeacon = beacon;
+	}
+
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
 		@Override
@@ -60,25 +79,6 @@ public class BeaconActivity extends Activity {
 				finish();
 			}
 		});
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		startService(beaconDiscoverServiceIntent);
-		registerReceiver(broadcastReceiver, new IntentFilter(
-				BeaconDiscoverService.BROADCAST_ACTION));
-	}
-
-	public void setBeacon(Beacon beacon) {
-		MainActivity.clickedBeacon = beacon;
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		unregisterReceiver(broadcastReceiver);
-		stopService(beaconDiscoverServiceIntent);
 	}
 
 }

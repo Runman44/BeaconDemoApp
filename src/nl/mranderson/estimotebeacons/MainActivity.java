@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,23 +43,6 @@ public class MainActivity extends Activity {
 		stopService(beaconDiscoverServiceIntent);
 	}
 
-	private void checkBluetoothEnabled() {
-		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter
-				.getDefaultAdapter();
-		if (mBluetoothAdapter == null) {
-			Toast warning = Toast.makeText(this,
-					"Warning: Device does not support Bluetooth",
-					Toast.LENGTH_LONG);
-			warning.show();
-		} else {
-			if (!mBluetoothAdapter.isEnabled()) {
-				Toast warning = Toast.makeText(this,
-						"Warning: Bluetooth is not enabled", Toast.LENGTH_LONG);
-				warning.show();
-			}
-		}
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -79,6 +61,27 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Checks if bluetooth is enabled. if bluetooth isn't supported or isn't
+	 * enabled there will be a warning given to the user
+	 */
+	private void checkBluetoothEnabled() {
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter
+				.getDefaultAdapter();
+		if (mBluetoothAdapter == null) {
+			Toast warning = Toast.makeText(this,
+					"Warning: Device does not support Bluetooth",
+					Toast.LENGTH_LONG);
+			warning.show();
+		} else {
+			if (!mBluetoothAdapter.isEnabled()) {
+				Toast warning = Toast.makeText(this,
+						"Warning: Bluetooth is not enabled", Toast.LENGTH_LONG);
+				warning.show();
+			}
+		}
+	}
+
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -91,12 +94,6 @@ public class MainActivity extends Activity {
 					if ((beacon.getProximityUUID().equals(clickedBeacon
 							.getProximityUUID()))
 							&& (beacon.getMinor() == clickedBeacon.getMinor())) {
-
-						Log.d("###", Utils.computeProximity(clickedBeacon)
-								+ "van clickedbeacon");
-
-						Log.d("###", Utils.computeProximity(beacon)
-								+ "van beacon");
 
 						switch (Utils.computeProximity(beacon)) {
 						case UNKNOWN:

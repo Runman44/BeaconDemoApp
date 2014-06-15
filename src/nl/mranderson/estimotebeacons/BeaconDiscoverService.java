@@ -59,7 +59,10 @@ public class BeaconDiscoverService extends Service {
 				for (Beacon beacon : beacons) {
 					switch (Utils.computeProximity(beacon)) {
 					case FAR:
-						postNotification("Welcome, please stop by at <<store>>");
+						postNotification("Welcome, please search me!");
+						break;
+					case NEAR:
+						postNotification("You are getting closer!");
 						break;
 					default:
 						break;
