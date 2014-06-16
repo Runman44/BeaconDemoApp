@@ -26,3 +26,9 @@ This demo app has three zones of proimity.
 * Immediate - between 0 - 3 meters
 
 All of these zones displays a different images.
+
+
+Example
+============
+
+https://www.youtube.com/watch?v=4nO_UlZxJG0&feature=youtu.be
