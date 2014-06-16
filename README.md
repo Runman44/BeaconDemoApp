@@ -23,6 +23,6 @@ This demo app has three zones of proimity.
 
 * Far - between 10 - 70 meters
 * Near - between 3 - 10 meters
-* Immidiate - between 0 - 3 meters
+* Immediate - between 0 - 3 meters
 
 All of these zones displays a different images.
