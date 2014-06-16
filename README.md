@@ -1,7 +1,7 @@
 BeaconDemoApp
 =============
 
-a demo app for the use of a iBeacon in Android
+This is a small application to show the main functions of the iBeacon Technology
 
 How to use
 =============
