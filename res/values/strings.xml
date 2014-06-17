@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Beacon Demo App</string>
+    <string name="app_name">SPWNED Beacon App</string>
     <string name="error">Error</string>
     <string name="beacons">Beacons</string>
     <string name="searching">Searching for beacons...</string>
